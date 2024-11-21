@@ -33,10 +33,34 @@ async function main () {
     await prisma.event.upsert({
       where: { id: event.id },
       update: {},
-      create: event
+      create: {
+        id: event.id,
+        createdBy: event.createdBy,
+        title: event.title,
+        description: event.description,
+        image: event.image,
+        categories: {
+          connect: event.categoryIds.map((id) => ({ id })),
+      }, location: event.location,
+      startTime: event.startTime,
+      endTime: event.endTime
+
+
+    }
     })
   }
 }
+
+// id          String  @id @default(uuid())
+//   createdBy   String
+//   title       String
+//   description String
+//   image       String
+//   categoryIds String
+//   location    String
+//   startTime   DateTime
+//   endTime     DateTime
+//   categories 
 
 
 main() //promise handlers
